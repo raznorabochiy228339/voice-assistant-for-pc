@@ -89,7 +89,7 @@ def execute_command(command):
     global running
 
     if "приветствие" in command:
-        speak("приветствие")
+        speak("Здравствуйте, сэр!")
 
     elif "создать резервную копию" in command:
         speak("образ создан")
