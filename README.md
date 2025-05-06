@@ -1,4 +1,3 @@
-# -```markdown
 # Пятница — Голосовой Ассистент
 
 ## Описание
@@ -36,22 +35,17 @@
 ## Установка
 1. Клонируйте репозиторий:
    ```bash
-   git clone https://github.com/yourusername/pятница.git
-   cd пятница
+   git https://github.com/raznorabochiy228339/voice-assistant-for-pc
+   cd voice-assistant-for-pc
    ```
 2. Установите зависимости:
    ```bash
    pip install -r requirements.txt
    ```
-3. Для изменения яркости экрана:
-   ```bash
-   pip install screen_brightness_control
-   ```
-
 ---
 
 ## Настройка
-1. Откройте `jarvis.py` и настройте параметры в блоке `config`:
+1. Откройте `voice_assis` и настройте параметры в блоке `config`:
    - Измените `wake_word` (по умолчанию "пятница").
    - Укажите путь к Steam в `steam_path`.
    - Заполните `telegram_api_hash` и `telegram_api_id` для использования Telegram-функций.
@@ -124,20 +118,3 @@
 3. **Telegram API**: Зарегистрируйте приложение на [my.telegram.org](https://my.telegram.org/) и введите `api_hash` и `api_id` в конфиг.
 
 ---
-
-## Лицензия
-MIT License. Подробности в файле `LICENSE`.
-``` 
-
-### Файл `requirements.txt`:
-```plaintext
-pyttsx3
-SpeechRecognition
-pyautogui
-psutil
-webbrowser
-vdf
-telethon
-gitpython
-screen_brightness_control
-```

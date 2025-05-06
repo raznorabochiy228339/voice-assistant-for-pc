@@ -9,3 +9,12 @@ opencv-python
 google-api-python-client
 telethon
 screen_brightness_control
+pyttsx3
+SpeechRecognition
+pyautogui
+psutil
+webbrowser
+vdf
+telethon
+gitpython
+screen_brightness_control
