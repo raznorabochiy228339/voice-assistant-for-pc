@@ -1,0 +1,19 @@
+{
+    "wake_word": "пятница",
+    "language": "ru-RU",
+    "speak_method": "tts",
+    
+
+    "steam_path": "C:\\Program Files (x86)\\Steam\\steam.exe",
+    "project_path": "C:\\Users\\user\\Documents\\GitHub\\jarvis",
+    
+
+    "tts_voice": "irina",
+    "tts_rate": 150,
+    "tts_volume": 1.0,
+    
+
+    "telegram_api_id": 12549621,
+    "telegram_api_hash": "678f971822932f53b8b56fc450cad132",
+    "telegram_phone": "89055767767"
+}

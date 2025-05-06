@@ -1,0 +1,11 @@
+SpeechRecognition
+pyttsx3
+pyautogui
+vosk
+selenium
+GitPython
+psutil
+opencv-python
+google-api-python-client
+telethon
+screen_brightness_control
