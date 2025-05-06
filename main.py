@@ -18,7 +18,7 @@ from datetime import datetime
 
 # === Настройки логирования ===
 logging.basicConfig(
-    filename="jarvis.log",
+    filename="voice_assis.log",
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
