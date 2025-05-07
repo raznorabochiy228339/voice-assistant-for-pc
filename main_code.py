@@ -45,6 +45,25 @@ config = {
     "telegram_api_id": 12345678 #вставте сюда ваш API ID
 }
 
+# === Сохранение конфига в файл ===
+def save_config():
+    try:
+        with open("config.json", "w", encoding="utf-8") as f:
+            json.dump(config, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"[Ошибка]: Не удалось сохранить конфигурацию — {e}")
+
+# === Загрузка конфига из файла (если есть) ===
+def load_config():
+    global config
+    try:
+        if os.path.exists("config.json"):
+            with open("config.json", "r", encoding="utf-8") as f:
+                loaded_config = json.load(f)
+                config.update(loaded_config)
+    except Exception as e:
+        print(f"[Ошибка]: Не удалось загрузить конфигурацию — {e}")
+
 # === Функция воспроизведения аудио ===
 import pyttsx3
 

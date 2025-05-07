@@ -1,0 +1,9 @@
+{
+  "wake_word": "пятница",
+  "language": "ru-RU",
+  "steam_path": "C:\\Program Files (x86)\\Steam\\steam.exe",
+  "volume_step": 5,
+  "brightness_step": 10,
+  "telegram_api_hash": "",
+  "telegram_api_id": 12345678
+}
