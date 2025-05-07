@@ -15,6 +15,9 @@ import speech_recognition as sr
 from pathlib import Path
 from playsound import playsound
 from datetime import datetime
+import pyttsx3
+import tkinter as tk
+from tkinter import scrolledtext, messagebox
 
 # === Настройки логирования ===
 logging.basicConfig(
@@ -45,26 +48,115 @@ config = {
 # === Функция воспроизведения аудио ===
 import pyttsx3
 
-# Инициализация синтезатора речи
+# === Инициализация синтезатора речи ===
 engine = pyttsx3.init()
-
-# Настройка голоса (Microsoft)
 def set_voice_properties():
     voices = engine.getProperty('voices')
     for voice in voices:
         if "Irina" in voice.name:
             engine.setProperty('voice', voice.id)
             break
-    engine.setProperty('rate', 150)  # Скорость речи
-    engine.setProperty('volume', 1.0)  # Громкость (от 0.0 до 1.0)
-
+    engine.setProperty('rate', 150)
+    engine.setProperty('volume', 1.0)
 set_voice_properties()
 
+# === GUI класс ===
+class AssistantGUI(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("Пятница - Голосовой Ассистент")
+        self.geometry("600x400")
+        self.resizable(False, False)
+        self.configure(bg="#2b2b2b")
+
+        # === Лог-панель ===
+        self.log_text = scrolledtext.ScrolledText(self, wrap=tk.WORD, width=70, height=15, bg="#1e1e1e", fg="white")
+        self.log_text.pack(pady=10)
+
+        # === Статус-бар ===
+        self.status_frame = tk.Frame(self, bg="#2b2b2b")
+        self.status_frame.pack(pady=5)
+
+        self.status_circle = tk.Canvas(self.status_frame, width=20, height=20, bg="#2b2b2b", highlightthickness=0)
+        self.status_circle.create_oval(5, 5, 15, 15, fill="red")
+        self.status_circle.pack(side=tk.LEFT, padx=10)
+
+        self.status_label = tk.Label(self.status_frame, text="Статус: Спит", fg="white", bg="#2b2b2b", font=("Arial", 10))
+        self.status_label.pack(side=tk.LEFT)
+
+        # === Кнопки ===
+        self.btn_frame = tk.Frame(self, bg="#2b2b2b")
+        self.btn_frame.pack(pady=10)
+
+        self.start_btn = tk.Button(self.btn_frame, text="Запустить", command=self.toggle_assistant, bg="#4CAF50", fg="white")
+        self.start_btn.pack(side=tk.LEFT, padx=5)
+
+        self.settings_btn = tk.Button(self.btn_frame, text="Настройки", command=self.open_settings, bg="#FF9800", fg="white")
+        self.settings_btn.pack(side=tk.LEFT, padx=5)
+
+        self.exit_btn = tk.Button(self.btn_frame, text="Выход", command=self.on_close, bg="#f44336", fg="white")
+        self.exit_btn.pack(side=tk.LEFT, padx=5)
+
+        # === Перенаправление вывода ===
+        self.original_stdout = sys.stdout
+        sys.stdout = self
+
+        # === Поток ассистента ===
+        self.listener_thread = None
+
+    def write(self, text):
+        self.log_text.insert(tk.END, text)
+        self.log_text.see(tk.END)
+
+    def flush(self):
+        pass
+
+    def toggle_assistant(self):
+        global running
+        if self.start_btn["text"] == "Запустить":
+            self.start_btn["text"] = "Остановить"
+            self.status_label["text"] = "Статус: Активен"
+            self.status_circle.delete("all")
+            self.status_circle.create_oval(5, 5, 15, 15, fill="green")
+            running = True
+            self.listener_thread = threading.Thread(target=main_loop, daemon=True)
+            self.listener_thread.start()
+        else:
+            self.start_btn["text"] = "Запустить"
+            self.status_label["text"] = "Статус: Спит"
+            self.status_circle.delete("all")
+            self.status_circle.create_oval(5, 5, 15, 15, fill="red")
+            running = False
+
+    def open_settings(self):
+        messagebox.showinfo("Настройки", "Функция настройки пока недоступна.\nИзмените настройки в файле config.")
+
+    def on_close(self):
+        global running
+        running = False
+        self.destroy()
+        sys.stdout = self.original_stdout
+        os._exit(0)
+
+# === Функция speak с логированием ===
 def speak(text):
-    """Произносит текст через голосовой движок."""
     print(f"[Пятница]: {text}")
     engine.say(text)
     engine.runAndWait()
+
+# === Основной цикл работы ассистента ===
+def main_loop():
+    print("[Пятница]: Ассистент активирован. Жду слово '{}'...".format(config['wake_word']))
+    while running:
+        try:
+            text = listen()
+            if text and config["wake_word"] in text:
+                cmd = text.replace(config["wake_word"], "").strip()
+                if cmd:
+                    execute_command(cmd)
+        except Exception as e:
+            speak("ошибка")
+            print(f"[Ошибка]: {e}")
 
 # === Функция распознавания речи ===
 def listen():
@@ -599,6 +691,11 @@ def main():
     listener_thread.start()
     while running:
         time.sleep(1)
+
+# === Запуск GUI ===
+if __name__ == "__main__":
+    app = AssistantGUI()
+    app.mainloop()
 
 if __name__ == "__main__":
     main()
