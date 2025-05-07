@@ -18,3 +18,4 @@ vdf
 telethon
 gitpython
 screen_brightness_control
+PyQt5
