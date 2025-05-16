@@ -216,8 +216,12 @@ class AssistantGUI(QMainWindow):
 
         # === Рабочий поток ===
         self.worker = AssistantWorker(self)
-        self.worker.log_signal.connect(self.log_text.append)
+        self.worker.log_signal.connect(self.on_log_received)  # Подключаем к своему методу
         self.worker.status_signal.connect(self.update_status)
+
+    # === Новый метод для обработки логов ===
+    def on_log_received(self, text):
+        self.log_text.append(text)
 
     def timerEvent(self, event):
         self.system_info.setText(self.get_system_info())

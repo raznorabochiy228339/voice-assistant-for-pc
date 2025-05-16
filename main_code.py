@@ -271,7 +271,7 @@ def execute_command(command):
     elif "нажми левую кнопку" in command:
         click_mouse("left")
 
-    elif "скроллинг" in command:
+    elif "прокрути" in command:
         direction = command.split("скроллинг")[-1].strip()
         scroll_mouse(direction)
 
